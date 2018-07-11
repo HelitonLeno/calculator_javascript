@@ -37,9 +37,69 @@ class CalcController {
         this._operation.pop();
     }
 
-    addOperation(value) {
+    getLastOperation() {
+        return this._operation[this._operation.length - 1];
+    }
+
+    isOperator(value) {
+
+        return (['+', '-', '*', '/', '%'].indexOf(value) > -1);
+
+    }
+
+    setLastOperation(value) {
+        this._operation[this._operation.length - 1] = value;
+    }
+
+    pushOperation(value) {
         this._operation.push(value);
-        console.log(this._operation)
+
+        if (this._operation.length > 3) {
+
+            this.calc();
+
+        }
+    }
+
+    calc() {
+        let last = this._operation.pop();
+        let result = eval(this._operation.join(""));
+
+        this._operation = [result, last];
+    }
+
+    setLastNumberToDisplay() {
+
+    }
+
+    addOperation(value) {
+
+        if (isNaN(this.getLastOperation())) {
+
+            if (this.isOperator(value)) {
+                this.setLastOperation(value);
+
+            } else if (isNaN(value)) {
+                console.log(value);
+
+            } else {
+                this.pushOperation(value);
+            }
+
+        } else {
+            if (this.isOperator(value)) {
+                this.pushOperation(value);
+
+            } else {
+                let newValue = this.getLastOperation().toString() + value.toString();
+                this.setLastOperation(parseInt(newValue));
+
+                this.setLastNumberToDisplay();
+            }
+
+        }
+
+        console.log(this._operation);
     }
 
     setError() {
@@ -53,24 +113,34 @@ class CalcController {
                 break;
 
             case 'ce':
-                this.clearAll();
+                this.clearEntry();
                 break;
+
             case 'soma': {
+                this.addOperation('+');
                 break;
             }
             case 'subtracao': {
+                this.addOperation('-');
                 break;
             }
             case 'divisao': {
+                this.addOperation('/');
                 break;
             }
             case 'multiplicacao': {
+                this.addOperation('*');
                 break;
             }
             case 'igual': {
                 break;
             }
             case 'porcento': {
+                this.addOperation('%');
+                break;
+            }
+            case 'ponto': {
+                this.addOperation('.');
                 break;
             }
 
