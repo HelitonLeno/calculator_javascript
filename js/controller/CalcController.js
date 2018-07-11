@@ -76,7 +76,7 @@ class CalcController {
 
         if (this._operation.length < 3) {
             let firstItem = this._operation[0];
-            this._operation = [firstItem, this._lastOperation, this._lastNumber];
+            this._operation = [firstItem, this._lastOperator, this._lastNumber];
         }
 
         if (this._operation.length > 3) {
@@ -86,9 +86,6 @@ class CalcController {
         } else if (this._operation.length == 3) {
             this._lastNumber = this.getLastItem(false);
         }
-
-        console.log('_lastOperator: ', this._lastOperator);
-        console.log('_lastNumber: ', this._lastNumber);
 
         let result = this.getResult();
 
