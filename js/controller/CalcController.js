@@ -34,6 +34,9 @@ class CalcController {
 
     clearAll() {
         this._operation = [];
+        this._lastNumber = '';
+        this._lastOperator = '';
+
         this.setLastNumberToDisplay();
     }
 
@@ -137,9 +140,6 @@ class CalcController {
             if (this.isOperator(value)) {
                 this.setLastOperation(value);
 
-            } else if (isNaN(value)) {
-                console.log(value);
-
             } else {
                 this.pushOperation(value);
                 this.setLastNumberToDisplay();
@@ -151,11 +151,10 @@ class CalcController {
 
             } else {
                 let newValue = this.getLastOperation().toString() + value.toString();
-                this.setLastOperation(parseInt(newValue));
+                this.setLastOperation(newValue);
 
                 this.setLastNumberToDisplay();
             }
-
         }
 
         console.log(this._operation);
@@ -163,6 +162,23 @@ class CalcController {
 
     setError() {
         this.displayCalc = "Error";
+    }
+
+    addDot() {
+
+        let lastOperation = this.getLastOperation();
+        
+        if (typeof lastOperation === 'string' && lastOperation.split('').indexOf('.') > -1) return;
+
+        if (this.isOperator(lastOperation) || !lastOperation) {
+            this.pushOperation('0.');
+
+        } else {
+            this.setLastOperation(lastOperation.toString() + '.');
+        }
+
+        this.setLastNumberToDisplay();
+
     }
 
     execBtn(value) {
@@ -200,7 +216,7 @@ class CalcController {
                 break;
             }
             case 'ponto': {
-                this.addOperation('.');
+                this.addDot();
                 break;
             }
 
@@ -239,7 +255,6 @@ class CalcController {
                 btn.style.cursor = "pointer";
             });
         });
-
     }
 
     setDisplayDateTime() {
@@ -248,6 +263,7 @@ class CalcController {
             month: "long",
             year: "numeric"
         });
+
         this.displayTime = this.currentDate.toLocaleTimeString(this._locale);
     }
 
@@ -283,5 +299,4 @@ class CalcController {
     set currentDate(value) {
         this._dateEl.innerHTML = value;
     }
-
 }
