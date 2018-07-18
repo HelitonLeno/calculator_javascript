@@ -41,7 +41,6 @@ class CalcController {
                 case '-':
                 case '*':
                 case '/':
-                case '%':
                     this.addOperation(e.key);
                     break;
 
@@ -50,7 +49,8 @@ class CalcController {
                     this.calc();
                     break;
                 }
-                case 'porcento': {
+                case 'porcento':
+                case '%': {
                     this.addOperation('%');
                     break;
                 }
